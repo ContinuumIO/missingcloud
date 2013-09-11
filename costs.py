@@ -40,18 +40,22 @@ def main():
     keyfunc = lambda key: key[1]['category']
     sgroupby = lambda iterable, keyfunc: groupby(sorted(iterable, key=keyfunc), keyfunc)
     
-    region_pricing = pricing_data[sys.argv[1]]
+    
     print 
     for cetegory, instance_types in sgroupby(instance_types.items(), keyfunc):
         print cetegory
         for instance_id, ity in instance_types:
             col1 = '%s (%s)' % (ity['name'], instance_id)
-            cost = region_pricing.get(ity['type'],{}).get(ity['size'])
-            if cost:
-                col2 = '$%.3f / hour' % region_pricing.get(ity['type'],{}).get(ity['size'])
-            else:
-                col2 = 'unavailable'
-            print ' + %-35s %30s' %(col1, col2)
+            print ' + %-35s' %(col1,),
+            for region in sys.argv[1:]:
+                region_pricing = pricing_data.get(region,{})
+                cost = region_pricing.get(ity['type'],{}).get(ity['size'])
+                if cost:
+                    col2 = '$%.3f / hour' % region_pricing.get(ity['type'],{}).get(ity['size'])
+                else:
+                    col2 = 'unavailable'
+                print ' | %15s' % col2,
+            print 
         print 
     
     
