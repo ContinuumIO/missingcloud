@@ -5,7 +5,10 @@ import json
 
 
 def get_price(size):
-    return size['valueColumns'][0]['prices']['USD']
+    price = size['valueColumns'][0]['prices']['USD']
+    if price == 'N/A':
+        return 0.0
+    return float(price)
 
 def mktype(ty):                           
     if ty.endswith('ODI'):
@@ -41,8 +44,9 @@ def main():
     for cetegory, instance_types in sgroupby(instance_types.items(), keyfunc):
         print cetegory
         for instance_id, ity in instance_types:
-            print '+ %s (%s)' % (ity['name'], instance_id),
-            print region_pricing[ity['type']][ity['size']]
+            col1 = '%s (%s)' % (ity['name'], instance_id)
+            col2 = '$%.3f / hour' % region_pricing[ity['type']][ity['size']]
+            print ' + %-35s %30s' %(col1, col2)
         print 
     
     
