@@ -3,6 +3,15 @@ import requests
 import json
 import sys
 
+RMAP = {'us-east':'us-east-1', 
+        'us-west-2':'us-west-2',
+        'us-west':'us-west-1', 
+        'eu-ireland':'eu-west-1', 
+        'apac-sin':'ap-southeast-1', 
+        'apac-tokyo':'ap-northeast-1', 
+        'apac-syd':'ap-southeast-2', 
+        'sa-east-1':'sa-east-1',
+        }
 
 
 def get_price(size):
@@ -26,7 +35,7 @@ def fetch_pricing_data():
     for region in data['config']['regions']:
         instanceTypes = region['instanceTypes']
         value = {mktype(ity['type']):{size['size']:get_price(size) for size in ity['sizes']} for ity in instanceTypes}
-        pricing_data[region['region']] = value
+        pricing_data[RMAP[region['region']]] = value
     return pricing_data
     
 def main():

@@ -641,7 +641,7 @@
 		    "ebs_optimized_iopsMbps" : 0,
 		    "arch" : [32,64],
 		    "category": "Standard Instances",
-		    "name":"Small (Default)",
+		    "name":"Small",
 		    "type": "std",
 		    "size":"sm"},
 		"m1.medium" : {
